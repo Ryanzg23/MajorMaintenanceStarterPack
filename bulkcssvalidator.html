@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulk CSS Validator Links</title>
+<link href="favicon.png" rel="shortcut icon" type="image/x-icon">
+<style>
+  body {
+   font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px 10px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+	  color: #4383e0;
+  }
+  textarea {
+    width: 600px;
+    max-width: 100%;
+    height: 200px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    resize: vertical;
+    display: block;
+    margin: 0 auto;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 12px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #generateBtn { background: #28a745; color: #fff; }
+  #openAllBtn { background: #007bff; color: #fff; }
+  #copyAllBtn { background: #ffc107; color: #000; display: none; }
+  #linksWrapper {
+    margin-top: 20px;
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 10px;
+    width: 600px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #linksWrapper label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+  }
+  #linksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .linkBtn {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+
+    overflow-wrap: anywhere;
+  }
+  .linkBtn:hover { background-color: #666; transform: scale(1.02); }
+  .linkBtn.clicked { background-color: #28a745; color: #fff; }
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+</style>
+</head>
+<body>
+
+<h1>Bulk CSS Validator Links</h1>
+<textarea id="urlInput" placeholder="https://example1.com&#10;https://example2.com"></textarea>
+
+<div class="buttons">
+  <button id="generateBtn">Generate Links</button>
+  <button id="openAllBtn">Open All</button>
+  <button id="copyAllBtn">Copy All Links</button>
+</div>
+
+  <p class="note">
+    ⚠️ Note: “Open All” opens multiple tabs at once.<br>
+    Please make sure to <strong>allow pop-ups</strong> in your browser for it to work.<br><br>
+    💡 You can also <strong>copy all links</strong> and open them in your own URL bulk opener tool.
+  </p>
+
+<div id="linksWrapper" style="display:none;">
+  <label>Generated Validate CSS Sites Link:</label>
+  <div id="linksContainer"></div>
+</div>
+
+<script>
+const urlInput = document.getElementById('urlInput');
+const generateBtn = document.getElementById('generateBtn');
+const openAllBtn = document.getElementById('openAllBtn');
+const copyAllBtn = document.getElementById('copyAllBtn');
+const linksContainer = document.getElementById('linksContainer');
+const linksWrapper = document.getElementById('linksWrapper');
+
+// Correct validator URL (fills in URI automatically)
+const baseValidator = 'https://jigsaw.w3.org/css-validator/validator?uri=';
+
+let generatedLinks = [];
+
+function getUrls() {
+  return urlInput.value.split('\n').map(u => u.trim()).filter(u => u);
+}
+
+function generateLinks() {
+  linksContainer.innerHTML = '';
+  const urls = getUrls();
+  if (!urls.length) return alert('Please enter at least one URL.');
+
+  generatedLinks = urls.map(url => ({
+    url,
+    link: baseValidator + encodeURIComponent(url) + '&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en'
+  }));
+
+  generatedLinks.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'linkBtn';
+    btn.textContent = item.url; // Show only original URL
+    btn.addEventListener('click', () => {
+      window.open(item.link, '_blank');
+      btn.classList.add('clicked');
+    });
+    linksContainer.appendChild(btn);
+  });
+
+  linksWrapper.style.display = 'block';
+  copyAllBtn.style.display = 'inline-block';
+}
+
+function openAllLinks() {
+  const urls = generatedLinks.length ? generatedLinks.map(i => i.link) : getUrls().map(url => baseValidator + encodeURIComponent(url) + '&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en');
+  if (!urls.length) return alert('No URLs to open.');
+  const buttons = document.querySelectorAll('.linkBtn');
+  urls.forEach((link, index) => {
+    window.open(link, '_blank');
+    if (buttons[index]) buttons[index].classList.add('clicked');
+  });
+}
+
+function copyAllLinks() {
+  if (!generatedLinks.length) return;
+  navigator.clipboard.writeText(generatedLinks.map(i => i.link).join('\n'));
+  copyAllBtn.textContent = 'Copied ✓';
+  copyAllBtn.disabled = true;
+  setTimeout(() => {
+    copyAllBtn.textContent = 'Copy All Links';
+    copyAllBtn.disabled = false;
+  }, 2000);
+}
+
+generateBtn.addEventListener('click', generateLinks);
+openAllBtn.addEventListener('click', openAllLinks);
+copyAllBtn.addEventListener('click', copyAllLinks);
+</script>
+
+</body>
+</html>

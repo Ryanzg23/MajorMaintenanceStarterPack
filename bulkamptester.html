@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk AMP Validator</title>
+<link href="favicon.png" rel="shortcut icon" type="image/x-icon">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 30px 10px;
+    }
+  h2 {
+    color: #fff;
+    margin-bottom: 15px;
+  }
+
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 150px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #validateBtn {
+      background: #28a745;
+      color: white;
+    }
+
+    #openAllBtn {
+      background: #007bff;
+      color: white;
+      margin-left: 10px;
+    }
+
+    #copyAllBtn {
+      background: #ff9800;
+      color: white;
+      margin-left: 10px;
+      display: none; /* hidden until links are generated */
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .results {
+      margin-top: 25px;
+      width: 90%;
+      max-width: 600px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .results h3 {
+      margin-bottom: 15px;
+      color: #0ff;
+    }
+
+    .amp-link {
+      display: inline-block;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #00c3ff;
+      text-decoration: none;
+      padding: 10px 15px;
+      margin: 5px 5px 10px 0;
+      transition: 0.3s;
+      font-size: 15px;
+      word-wrap: break-word;
+    }
+
+    .amp-link:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .amp-link.clicked {
+      background: #444;
+      color: #ccc;
+      border-color: #555;
+    }
+
+    .copied {
+      color: #4caf50;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bulk AMP Validator</h2>
+  <textarea id="urls" placeholder="Enter URLs here (one per line)..."></textarea>
+  <div>
+    <button id="validateBtn">Generate AMP Test Links</button>
+    <button id="openAllBtn">Open All</button>
+    <button id="copyAllBtn">Copy All Links</button>
+  </div>
+  <p class="note">
+    ⚠️ Note: “Open All” opens multiple tabs at once.<br>
+    Please make sure to <strong>allow pop-ups</strong> in your browser for it to work.<br><br>
+    💡 You can also <strong>copy all links</strong> and open them in your own URL bulk opener tool.
+  </p>
+
+  <p id="copyMsg" class="copied" style="display:none;">✅ All links copied to clipboard!</p>
+  <div class="results" id="results"></div>
+
+  <script>
+    const validateBtn = document.getElementById('validateBtn');
+    const openAllBtn = document.getElementById('openAllBtn');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const textarea = document.getElementById('urls');
+    const resultsDiv = document.getElementById('results');
+    const copyMsg = document.getElementById('copyMsg');
+
+    validateBtn.addEventListener('click', () => {
+      const urls = textarea.value.trim().split('\n').map(u => u.trim()).filter(u => u);
+      resultsDiv.innerHTML = '';
+      copyAllBtn.style.display = 'none';
+      copyMsg.style.display = 'none';
+
+      if (urls.length === 0) {
+        resultsDiv.innerHTML = '<p style="color:#f77;">Please enter at least one URL.</p>';
+        return;
+      }
+
+      const linkButtons = urls.map(url => {
+        const validatorUrl = `https://search.google.com/test/amp?url=${encodeURIComponent(url)}`;
+        return `<a href="${validatorUrl}" target="_blank" class="amp-link">${url}</a>`;
+      }).join('');
+
+      resultsDiv.innerHTML = `<h3>Generated AMP Test Links:</h3>${linkButtons}`;
+      copyAllBtn.style.display = 'inline-block';
+
+      // Add click event to mark clicked links
+      document.querySelectorAll('.amp-link').forEach(link => {
+        link.addEventListener('click', () => {
+          link.classList.add('clicked');
+        });
+      });
+    });
+
+    openAllBtn.addEventListener('click', () => {
+      const urls = textarea.value.trim().split('\n').map(u => u.trim()).filter(u => u);
+      if (urls.length === 0) {
+        alert('Please enter at least one URL.');
+        return;
+      }
+
+      urls.forEach((url, index) => {
+        setTimeout(() => {
+          const validatorUrl = `https://search.google.com/test/amp?url=${encodeURIComponent(url)}`;
+          window.open(validatorUrl, '_blank');
+        }, index * 400); // small delay between openings
+      });
+    });
+
+    copyAllBtn.addEventListener('click', () => {
+      const urls = textarea.value.trim().split('\n').map(u => u.trim()).filter(u => u);
+      if (urls.length === 0) {
+        alert('Please enter at least one URL first.');
+        return;
+      }
+
+      const allLinks = urls.map(url => `https://search.google.com/test/amp?url=${encodeURIComponent(url)}`).join('\n');
+      navigator.clipboard.writeText(allLinks).then(() => {
+        copyMsg.style.display = 'block';
+        setTimeout(() => copyMsg.style.display = 'none', 2500);
+      });
+    });
+  </script>
+</body>
+</html>
