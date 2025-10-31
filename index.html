@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Major Maintenance Starter Pack</title>
+	<link href="favicon.png" rel="shortcut icon" type="image/x-icon">
+
+  <style>
+    /* Page layout */
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#7dd3fc;
+      --text:#e6eef8;
+      --muted:#9fb3c9;
+      --btn-bg:#132033;
+      --btn-border:rgba(125,211,252,0.12);
+      --radius:12px;
+      --maxw:760px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(125,211,252,0.04), transparent 8%),
+        radial-gradient(1000px 500px at 90% 90%, rgba(99,102,241,0.03), transparent 8%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--maxw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    header h1{
+      margin:0 0 8px 0;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+    header p{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Buttons list - one per line */
+    .links{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    /* Anchor styled as button */
+    .site-btn{
+      display:block;              /* one per line */
+      text-decoration:none;
+      padding:14px 18px;
+      border-radius:10px;
+      background:linear-gradient(180deg,var(--btn-bg), rgba(255,255,255,0.01));
+      border:1px solid var(--btn-border);
+      color:var(--text);
+      font-weight:600;
+      font-size:15px;
+      box-shadow: 0 4px 12px rgba(2,6,23,0.5);
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      text-align:left;
+    }
+
+    .site-btn small{
+      display:block;
+      font-weight:500;
+      color:var(--muted);
+      margin-top:4px;
+      font-size:12px;
+    }
+
+    .site-btn:focus,
+    .site-btn:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      outline: none;
+    }
+
+    /* Visited / active visual hint (uses CSS only — will persist per browser history) */
+    .site-btn:visited{
+      opacity:0.85;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width:480px){
+      .container{ padding:18px }
+      header h1{ font-size:18px }
+      .site-btn{ padding:12px; font-size:14px }
+    }
+
+    /* optional small hint */
+    .note{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-labelledby="page-title">
+    <header>
+      <h1 id="page-title">Major Maintenance Starter Pack</h1>
+      <p>Click any button to open the bulk site openers made for our maintenance.</p>
+    </header>
+
+    <section class="links" aria-label="Netlify site links">
+		
+      <a class="site-btn" href="https://bulkpagespeed.netlify.app/" target="_blank" rel="noopener noreferrer">
+        PageSpeed Insights Bulk Opener (ACTIVE)
+      </a>
+
+      <a class="site-btn" href="https://bulkamptest.netlify.app/" target="_blank" rel="noopener noreferrer">
+        AMP Test Bulk Opener (ACTIVE)
+      </a>
+
+      <a class="site-btn" href="https://bulksitescan.netlify.app/" target="_blank" rel="noopener noreferrer">
+        Scan Site Bulk (ACTIVE)
+      </a>
+
+      <a class="site-btn" href="https://bulkcssvalidator.netlify.app/" target="_blank" rel="noopener noreferrer">
+        Validate CSS Bulk (ACTIVE)
+      </a>
+
+      <a class="site-btn" href="#" target="_blank" rel="noopener noreferrer">
+        Check Deadlinks Bulk (in construction)
+      </a>
+
+      <a class="site-btn" href="#" target="_blank" rel="noopener noreferrer">
+        SEO Checker Bulk (Title, Desc, Robots, Canonical) (in construction)
+      </a>
+
+    </section>
+
+  </main>
+</body>
+</html>
