@@ -114,6 +114,51 @@
       color:var(--muted);
       font-size:12px;
     }
+	  
+	  /* ACTIVE status indicator */
+.site-btn{
+  position: relative;
+  padding-left: 44px; /* space for the dot */
+}
+
+/* green glowing circle */
+.site-btn::before{
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow:
+    0 0 6px rgba(34,197,94,0.8),
+    0 0 12px rgba(34,197,94,0.6),
+    0 0 18px rgba(34,197,94,0.4);
+  animation: pulseGlow 1.6s infinite ease-in-out;
+}
+
+/* glowing pulse animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow:
+      0 0 4px rgba(34,197,94,0.6),
+      0 0 8px rgba(34,197,94,0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba(34,197,94,1),
+      0 0 20px rgba(34,197,94,0.8),
+      0 0 30px rgba(34,197,94,0.6);
+  }
+  100% {
+    box-shadow:
+      0 0 4px rgba(34,197,94,0.6),
+      0 0 8px rgba(34,197,94,0.4);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -155,6 +200,7 @@
   </main>
 </body>
 </html>
+
 
 
 
